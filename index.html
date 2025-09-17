@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepSeek AI聊天助手</title>
+    <title>DeepSeek AI 聊天助手</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.2.12/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/core.min.js"></script>
     <style>
         :root {
             --primary-color: #10a37f;
@@ -29,11 +32,14 @@
             color: var(--text-light);
             height: 100vh;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .app-container {
             display: flex;
-            height: 100vh;
+            flex: 1;
+            height: 100%;
         }
 
         /* 侧边栏样式 */
@@ -43,7 +49,6 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
         }
 
         .logo {
@@ -52,10 +57,6 @@
             align-items: center;
             gap: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo img {
-            height: 32px;
         }
 
         .logo h1 {
@@ -165,6 +166,89 @@
             color: var(--text-light);
         }
 
+        /* Markdown 渲染样式 */
+        .markdown-content {
+            line-height: 1.6;
+        }
+
+        .markdown-content h1, 
+        .markdown-content h2, 
+        .markdown-content h3, 
+        .markdown-content h4, 
+        .markdown-content h5, 
+        .markdown-content h6 {
+            margin: 1em 0 0.5em 0;
+            color: var(--text-light);
+        }
+
+        .markdown-content p {
+            margin-bottom: 1em;
+        }
+
+        .markdown-content ul, 
+        .markdown-content ol {
+            margin-bottom: 1em;
+            padding-left: 2em;
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5em;
+        }
+
+        .markdown-content pre {
+            background-color: var(--bg-dark);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin: 1em 0;
+            overflow-x: auto;
+        }
+
+        .markdown-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 14px;
+        }
+
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+            background-color: var(--bg-dark);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .markdown-content th, 
+        .markdown-content td {
+            border: 1px solid #30363d;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .markdown-content tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 16px;
+            margin: 1em 0;
+            color: var(--text-lighter);
+        }
+
+        /* 图片样式 */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin: 1em 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .input-container {
             padding: 16px 24px 32px;
             width: 100%;
@@ -224,12 +308,14 @@
             margin-top: 12px;
         }
 
+        /* 加载指示器样式 */
         .loading-indicator {
             display: flex;
-            gap: 8px;
             align-items: center;
+            gap: 12px;
             padding: 12px 0;
             color: var(--primary-color);
+            min-height: 40px;
         }
 
         .dot-flashing {
@@ -241,6 +327,7 @@
             color: var(--primary-color);
             animation: dot-flashing 1s infinite linear alternate;
             animation-delay: 0.5s;
+            flex-shrink: 0;
         }
 
         .dot-flashing::before, .dot-flashing::after {
@@ -287,6 +374,25 @@
             z-index: 10;
         }
 
+        /* 底部声明区域 */
+        .legal-footer {
+            background-color: var(--bg-dark);
+            padding: 15px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .legal-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .legal-footer a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 position: absolute;
@@ -315,6 +421,10 @@
             .input-container {
                 padding: 12px 16px 24px;
             }
+            
+            .loading-indicator {
+                gap: 8px;
+            }
         }
     </style>
 </head>
@@ -328,8 +438,7 @@
         <!-- 侧边栏 -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <img src="https://deepseek.com/images/logo.svg" alt="DeepSeek Logo">
-                <h1>DeepSeek AI</h1>
+                <h1>AI聊天助手</h1>
             </div>
             
             <button class="new-chat-btn" id="new-chat-btn">
@@ -337,7 +446,11 @@
             </button>
             
             <div class="chat-history" id="history-list">
-                <!-- 历史对话将在这里动态生成 -->
+                <div class="history-item active">如何学习编程？</div>
+                <div class="history-item">解释人工智能的概念</div>
+                <div class="history-item">写一首关于春天的诗</div>
+                <div class="history-item">Python和JavaScript的区别</div>
+                <div class="history-item">如何提高深度学习模型性能？</div>
             </div>
         </div>
         
@@ -349,7 +462,37 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="message-content">
-                        <div class="message-text">您好！我是DeepSeek AI助手，很高兴为您服务。请问有什么我可以帮助您的吗？</div>
+                        <div class="markdown-content">
+                            <p>您好！我是AI聊天助手，很高兴为您服务。请问有什么我可以帮助您的吗？</p>
+                            <p>我可以：</p>
+                            <ul>
+                                <li>回答各种问题</li>
+                                <li>生成表格、代码等Markdown内容</li>
+                                <li>提供图片描述（如果API支持）</li>
+                            </ul>
+                            <p>示例表格：</p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>语言</th>
+                                        <th>用途</th>
+                                        <th>难度</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Python</td>
+                                        <td>数据分析、AI</td>
+                                        <td>简单</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>网页开发</td>
+                                        <td>中等</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -358,7 +501,7 @@
                 <div class="input-box">
                     <textarea 
                         id="message-input" 
-                        placeholder="向DeepSeek提问..." 
+                        placeholder="输入您的问题..." 
                         rows="1"
                     ></textarea>
                     <button id="send-btn" class="send-btn">
@@ -366,21 +509,40 @@
                     </button>
                 </div>
                 <div class="disclaimer">
-                    DeepSeek AI可能会生成不准确的信息，请谨慎验证重要内容
+                    本服务可能会生成不准确的信息，请谨慎验证重要内容
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- 底部法律声明 -->
+    <div class="legal-footer">
+        <p>本网站提供的服务由AI技术驱动，用户拥有对生成内容的使用权。</p>
+        <p>网站作者对用户使用内容可能导致的任何事故、损失或纠纷不承担任何责任。</p>
+        <p>使用本服务即表示您同意此<a href="#" id="terms-link">免责协议</a>。</p>
+    </div>
 
     <script>
+        // 配置marked.js
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const chatContainer = document.getElementById('chat-container');
             const messageInput = document.getElementById('message-input');
             const sendBtn = document.getElementById('send-btn');
             const newChatBtn = document.getElementById('new-chat-btn');
-            const historyList = document.getElementById('history-list');
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const sidebar = document.getElementById('sidebar');
+            const termsLink = document.getElementById('terms-link');
             
             // 自动调整输入框高度
             messageInput.addEventListener('input', function() {
@@ -398,50 +560,34 @@
             });
             
             // 新对话
-            newChatBtn.addEventListener('click', startNewChat);
-            
-            // 移动端菜单切换
-            mobileMenuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-            
-            // 初始化
-            loadChatHistory();
-            updateHistoryList();
-            
-            function startNewChat() {
+            newChatBtn.addEventListener('click', () => {
                 chatContainer.innerHTML = `
                     <div class="message ai-message">
                         <div class="message-avatar">
                             <i class="fas fa-robot"></i>
                         </div>
                         <div class="message-content">
-                            <div class="message-text">您好！我是DeepSeek AI助手，很高兴为您服务。请问有什么我可以帮助您的吗？</div>
+                            <div class="markdown-content">
+                                <p>您好！我是AI聊天助手，很高兴为您服务。请问有什么我可以帮助您的吗？</p>
+                            </div>
                         </div>
                     </div>
                 `;
-                
-                // 保存当前对话
-                saveCurrentChat();
-                
-                // 创建新对话
-                const newChat = {
-                    id: Date.now(),
-                    title: '新对话',
-                    messages: []
-                };
-                
-                // 保存到历史记录
-                const history = getChatHistory();
-                history.unshift(newChat);
-                localStorage.setItem('chatHistory', JSON.stringify(history));
-                
-                // 更新历史列表
-                updateHistoryList();
-                
-                // 设置当前对话
-                localStorage.setItem('currentChatId', newChat.id);
-            }
+            });
+            
+            // 移动端菜单切换
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+            
+            // 免责协议弹窗
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showTermsModal();
+            });
+            
+            // 添加示例对话
+            addExampleDialogs();
             
             function sendMessage() {
                 const message = messageInput.value.trim();
@@ -458,83 +604,23 @@
                 // 显示加载状态
                 showLoading();
                 
-                // 获取当前对话ID
-                const currentChatId = localStorage.getItem('currentChatId');
-                
-                // 保存消息到当前对话
-                const history = getChatHistory();
-                const currentChat = history.find(chat => chat.id == currentChatId);
-                
-                if (currentChat) {
-                    currentChat.messages.push({
-                        sender: 'user',
-                        text: message,
-                        timestamp: new Date().toISOString()
-                    });
-                    
-                    // 更新对话标题（如果第一条消息）
-                    if (currentChat.messages.length === 1) {
-                        currentChat.title = message.substring(0, 30) + (message.length > 30 ? '...' : '');
-                    }
-                    
-                    localStorage.setItem('chatHistory', JSON.stringify(history));
-                    updateHistoryList();
-                }
-                
-                // 调用DeepSeek API
-                callDeepSeekAPI(message, currentChat);
-            }
-            
-            async function callDeepSeekAPI(message, currentChat) {
-                try {
-                    // 这里应该使用您的DeepSeek API密钥
-                    const apiKey = 'sk-5ce3f12750c94592b520926bfff0930a';
-                    const apiUrl = 'https://api.deepseek.com/v1/chat/completions';
-                    
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${apiKey}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            model: "deepseek-chat",
-                            messages: [
-                                { role: "user", content: message }
-                            ]
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
+                // 模拟API响应
+                setTimeout(() => {
                     // 移除加载状态
                     hideLoading();
                     
-                    if (data.choices && data.choices.length > 0) {
-                        const aiResponse = data.choices[0].message.content;
-                        
-                        // 添加AI回复
-                        addMessage(aiResponse, 'ai');
-                        
-                        // 保存AI回复到当前对话
-                        if (currentChat) {
-                            currentChat.messages.push({
-                                sender: 'ai',
-                                text: aiResponse,
-                                timestamp: new Date().toISOString()
-                            });
-                            
-                            const history = getChatHistory();
-                            localStorage.setItem('chatHistory', JSON.stringify(history));
-                        }
-                    } else {
-                        addMessage('抱歉，无法获取响应，请稍后再试。', 'ai');
-                    }
-                } catch (error) {
-                    hideLoading();
-                    console.error('API调用错误:', error);
-                    addMessage('请求失败，请检查网络连接或API密钥。', 'ai');
-                }
+                    // 添加AI回复
+                    const responses = [
+                        "这是一个很好的问题！让我为您详细解释一下...",
+                        "根据我的理解，这个问题可以从多个角度来分析...",
+                        "感谢您的提问！这是一个非常有趣的话题...",
+                        "我可以帮您解答这个问题。首先，我们需要了解一些背景知识...",
+                        "这个问题有很多不同的解决方案，让我为您介绍最有效的几种方法..."
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage(randomResponse, 'ai');
+                }, 1500);
             }
             
             function addMessage(text, sender) {
@@ -553,11 +639,18 @@
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
                 
-                const textDiv = document.createElement('div');
-                textDiv.className = 'message-text';
-                textDiv.textContent = text;
+                // 使用marked.js渲染Markdown
+                const markdownDiv = document.createElement('div');
+                markdownDiv.className = 'markdown-content';
                 
-                contentDiv.appendChild(textDiv);
+                // 检查是否是图片URL
+                if (isImageUrl(text)) {
+                    markdownDiv.innerHTML = marked.parse(`![AI生成图片](${text})`);
+                } else {
+                    markdownDiv.innerHTML = marked.parse(text);
+                }
+                
+                contentDiv.appendChild(markdownDiv);
                 messageDiv.appendChild(avatarDiv);
                 messageDiv.appendChild(contentDiv);
                 
@@ -565,6 +658,11 @@
                 
                 // 滚动到底部
                 chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            function isImageUrl(text) {
+                // 简单的图片URL检测
+                return text.match(/\.(jpeg|jpg|gif|png|webp)$/) !== null;
             }
             
             function showLoading() {
@@ -601,123 +699,94 @@
                 }
             }
             
-            function getChatHistory() {
-                const history = localStorage.getItem('chatHistory');
-                return history ? JSON.parse(history) : [];
-            }
-            
-            function loadChatHistory() {
-                const currentChatId = localStorage.getItem('currentChatId');
-                const history = getChatHistory();
-                
-                if (currentChatId) {
-                    const currentChat = history.find(chat => chat.id == currentChatId);
-                    
-                    if (currentChat) {
-                        // 清空聊天容器
-                        chatContainer.innerHTML = '';
-                        
-                        // 加载对话消息
-                        currentChat.messages.forEach(msg => {
-                            addMessage(msg.text, msg.sender);
-                        });
-                        
-                        return;
+            function addExampleDialogs() {
+                // 添加一些示例对话
+                const examples = [
+                    { 
+                        sender: 'user', 
+                        text: '这个AI助手是什么？' 
+                    },
+                    { 
+                        sender: 'ai', 
+                        text: '我是一个基于AI技术的聊天助手，可以帮助您解答问题、提供建议和生成内容。\n\n**主要功能**：\n- 回答问题\n- 生成表格\n- 解释概念\n\n示例表格：\n\n| 功能 | 描述 |\n|------|------|\n| 问答 | 回答各种问题 |\n| 表格 | 生成Markdown表格 |\n| 代码 | 提供代码示例 |'
+                    },
+                    { 
+                        sender: 'user', 
+                        text: '能生成一张示例图片吗？' 
+                    },
+                    { 
+                        sender: 'ai', 
+                        text: 'https://example.com/ai-generated-image.jpg' 
                     }
-                }
+                ];
                 
-                // 如果没有当前对话，创建默认对话
-                if (history.length === 0) {
-                    const newChat = {
-                        id: Date.now(),
-                        title: '新对话',
-                        messages: []
-                    };
-                    
-                    history.push(newChat);
-                    localStorage.setItem('chatHistory', JSON.stringify(history));
-                    localStorage.setItem('currentChatId', newChat.id);
-                } else {
-                    // 加载第一个对话
-                    const firstChat = history[0];
-                    localStorage.setItem('currentChatId', firstChat.id);
-                    
-                    // 清空聊天容器
-                    chatContainer.innerHTML = '';
-                    
-                    // 加载对话消息
-                    firstChat.messages.forEach(msg => {
-                        addMessage(msg.text, msg.sender);
-                    });
-                }
-            }
-            
-            function updateHistoryList() {
-                const history = getChatHistory();
-                historyList.innerHTML = '';
-                
-                history.forEach(chat => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    historyItem.textContent = chat.title;
-                    historyItem.dataset.id = chat.id;
-                    
-                    // 设置当前对话为激活状态
-                    const currentChatId = localStorage.getItem('currentChatId');
-                    if (chat.id == currentChatId) {
-                        historyItem.classList.add('active');
-                    }
-                    
-                    historyItem.addEventListener('click', () => {
-                        // 保存当前对话
-                        saveCurrentChat();
-                        
-                        // 设置新对话
-                        localStorage.setItem('currentChatId', chat.id);
-                        
-                        // 重新加载聊天历史
-                        loadChatHistory();
-                        
-                        // 更新历史列表
-                        updateHistoryList();
-                        
-                        // 在移动端关闭侧边栏
-                        if (window.innerWidth <= 768) {
-                            sidebar.classList.remove('active');
-                        }
-                    });
-                    
-                    historyList.appendChild(historyItem);
+                examples.forEach(example => {
+                    addMessage(example.text, example.sender);
                 });
             }
             
-            function saveCurrentChat() {
-                const currentChatId = localStorage.getItem('currentChatId');
-                const history = getChatHistory();
-                const currentChat = history.find(chat => chat.id == currentChatId);
+            function showTermsModal() {
+                // 创建模态框
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                modal.style.display = 'flex';
+                modal.style.alignItems = 'center';
+                modal.style.justifyContent = 'center';
+                modal.style.zIndex = '1000';
                 
-                if (currentChat) {
-                    // 获取当前聊天内容
-                    const messages = [];
-                    chatContainer.querySelectorAll('.message').forEach(message => {
-                        const sender = message.classList.contains('user-message') ? 'user' : 'ai';
-                        const text = message.querySelector('.message-text').textContent;
-                        messages.push({ sender, text });
-                    });
-                    
-                    // 更新对话消息
-                    currentChat.messages = messages;
-                    
-                    // 更新对话标题（如果有消息）
-                    if (messages.length > 0) {
-                        const firstMessage = messages[0].text;
-                        currentChat.title = firstMessage.substring(0, 30) + (firstMessage.length > 30 ? '...' : '');
-                    }
-                    
-                    localStorage.setItem('chatHistory', JSON.stringify(history));
-                }
+
+DeepSeek AI Chat Assistant
+  （此行代码无需翻译，为 HTML 语言中的链接标签，用于引入字体图标库）
+< >风格
+                modalContent.style.borderRadius = '8px';
+--主色调： #10a37f
+--主深色： #0d7a5f
+——bg-dark: # 343541;
+--背景更深色：#202123
+--背景浅色：#444654
+-- 文字浅色：#ececf1
+                    <h2 风格="margin-bottom: 20px; color: #10a37f;">免责协议</h2>
+                    <p 风格="margin-bottom: 15px; line-height: 1.6;">
+                        本网站提供的服务由AI技术驱动，用户拥有对生成内容的使用权。
+                    </p>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">
+                        网站作者对用户使用内容可能导致的任何事故、损失或纠纷不承担任何责任。
+                    </p>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">
+                        用户理解并同意，本服务提供的内容可能包含不准确或错误的信息，用户应自行验证所有生成内容的准确性和适用性。
+                    </p>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">
+                        本服务按"原样"提供，不提供任何明示或暗示的保证，包括但不限于对适销性、特定用途适用性和非侵权性的保证。
+                    </p>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">
+                        在任何情况下，网站作者均不对因使用或无法使用本服务而导致的任何直接、间接、附带、特殊、后果性或惩罚性损害赔偿承担责任。
+                    </p>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">
+                        用户同意赔偿并使网站作者免受因用户使用本服务或违反本协议而引起的任何索赔、损害、责任、损失和费用（包括律师费）的影响。
+                    </p>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">
+                        使用本服务即表示您同意本免责协议的所有条款。如果您不同意这些条款，请立即停止使用本服务。
+                    </p>
+                    <关闭 
+
+译文：关闭id="close-terms" style="background-color: #10a37f; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">关闭</button>
+                `;
+                
+模态框.appendChild(模态框内容
+将模态框添加到文档主体中。
+                
+                // 关闭按钮事件
+                const closeBtn = document.getElementById('close-terms');
+                closeBtn.addEventListener('click', () => {
+文档主体移除模态框；
+                });
             }
         });
-    </script>
+ （此内容在中文中无需翻译，直接保留原样
 </body>
 </html>
