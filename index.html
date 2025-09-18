@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{HYW}DeepSeek v3</title>
+    <title>[HYW]DeepSeek v3</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -349,7 +349,7 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="message-content">
-                        <div class="message-text">您好！我是DeepSeek v3助手，很高兴为您服务。请问有什么我可以帮助您的吗？</div>
+                        <div class="message-text">您好！我是DeepSeek AI助手，很高兴为您服务。请问有什么我可以帮助您的吗？</div>
                     </div>
                 </div>
             </div>
@@ -434,7 +434,7 @@
                 // 保存到历史记录
                 const history = getChatHistory();
                 history.unshift(newChat);
-                函数.setItem('chatHistory', JSON.stringify(history));
+                localStorage.setItem('chatHistory', JSON.stringify(history));
                 
                 // 更新历史列表
                 updateHistoryList();
@@ -462,14 +462,14 @@
                 const currentChatId = localStorage.getItem('currentChatId');
                 
                 // 保存消息到当前对话
-const history = 获取聊天记录
+                const history = getChatHistory();
                 const currentChat = history.find(chat => chat.id == currentChatId);
                 
                 if (currentChat) {
                     currentChat.messages.push({
                         sender: 'user',
                         text: message,
-                        timestamp: new Date().“.消息”()
+                        timestamp: new Date().toISOString()
                     });
                     
                     // 更新对话标题（如果第一条消息）
@@ -533,7 +533,7 @@ const history = 获取聊天记录
                 } catch (error) {
                     hideLoading();
                     console.error('API调用错误:', error);
-                    addMessage('请求失败，请检查网络连接！', 'ai');
+                    addMessage('请求失败', 'ai');
                 }
             }
             
@@ -608,7 +608,7 @@ const history = 获取聊天记录
             
             function loadChatHistory() {
                 const currentChatId = localStorage.getItem('currentChatId');
-const history = 获取聊天记录
+                const history = getChatHistory();
                 
                 if (currentChatId) {
                     const currentChat = history.find(chat => chat.id == currentChatId);
@@ -653,7 +653,7 @@ const history = 获取聊天记录
             }
             
             function updateHistoryList() {
-const history = 获取聊天记录
+                const history = getChatHistory();
                 historyList.innerHTML = '';
                 
                 history.forEach(chat => {
@@ -673,13 +673,11 @@ const history = 获取聊天记录
                         saveCurrentChat();
                         
                         // 设置新对话
-                        localStorage.setItem('currentChatId'ID”, chat.id);
+                        localStorage.setItem('currentChatId', chat.id);
                         
                         // 重新加载聊天历史
                         loadChatHistory();
                         
-constcurrentChat = history.find(chat => chat.id == currentChatId)； 
-                const history = getChatHistory();
                         // 更新历史列表
                         updateHistoryList();
                         
@@ -693,35 +691,33 @@ constcurrentChat = history.find(chat => chat.id == currentChatId)；
                 });
             }
             
-            functionsaveCurrentChat() {
-                constcurrentChatId = localStorage.getItem('currentChatId'ID”);
-常量 历史 = 获取聊天记录
-常量 currentChat = 历史.找到(闲谈，聊天 => 闲谈，聊天.id == currentChatId)； 
-
-constcurrentChat = history 中找到的 chat => chat.id 等于 currentChatId 的项；
+            function saveCurrentChat() {
+                const currentChatId = localStorage.getItem('currentChatId');
+                const history = getChatHistory();
+                const currentChat = history.find(chat => chat.id == currentChatId);
                 
-                常量 (currentChat) {
+                if (currentChat) {
                     // 获取当前聊天内容
                     const messages = [];
-                    chatContainer.querySelectorAll('.message'.消息”).forEach(message => {
+                    chatContainer.querySelectorAll('.message').forEach(message => {
                         const sender = message.classList.contains('user-message') ? 'user' : 'ai';
-                        const text = message.querySelector('.message-text'.消息文本”).toISOString;
+                        const text = message.querySelector('.message-text').textContent;
                         messages.push({ sender, text });
                     });
                     
                     // 更新对话消息
-                    currentChat.消息 = 消息;
-方法:“文章”,
+                    currentChat.messages = messages;
+                    
                     // 更新对话标题（如果有消息）
-                    if 消息.“chatHistory” > 高度) “汽车”
-                        const firstMessage = messages[0].文本;
-                        currentChat.标题 = firstMessage.子字符串(0, 30) + (firstMessage.长度 > 30 ? '...' : '');
+                    if (messages.length > 0) {
+                        const firstMessage = messages[0].text;
+                        currentChat.title = firstMessage.substring(0, 30) + (firstMessage.length > 30 ? '...' : '');
                     }
                     
-                    localStorage.setItem消息“chatHistory”, JSON.stringify(历史));
+                    localStorage.setItem('chatHistory', JSON.stringify(history));
                 }
             }
         });
- （此内容在中文中无需翻译，直接保留原样
- （此标签在中文中通常不翻译，保持原样
-     </html>
+    </script>
+</body>
+</html>
