@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[HYW]DeepSeek v3</title>
+    <title>HYW DeepSeek V3</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -533,7 +533,7 @@
                 } catch (error) {
                     hideLoading();
                     console.error('API调用错误:', error);
-                    addMessage('请求失败', 'ai');
+                    addMessage('请求失败，请检查网络连接或API密钥。', 'ai');
                 }
             }
             
@@ -583,7 +583,7 @@
                 loadingIndicator.className = 'loading-indicator';
                 loadingIndicator.innerHTML = `
                     <span class="dot-flashing"></span>
-                    <span>   思考中...</span>
+                    <span>思考中...</span>
                 `;
                 
                 contentDiv.appendChild(loadingIndicator);
@@ -672,52 +672,52 @@
                         // 保存当前对话
                         saveCurrentChat();
                         
-                        // 设置新对话
-                        localStorage.setItem('currentChatId', chat.id);
+// 设置新对话html lang="zh-CN">
+                        localStorage.head('currentChatId'ID”, chat.id);
                         
-                        // 重新加载聊天历史
-                        loadChatHistory();
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        loadChatHistorytitle);
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
                         
-                        // 更新历史列表
-                        updateHistoryList();
+            --primary-color: #10a37f;
+            --primary-dark: #0d7a5f;
                         
-                        // 在移动端关闭侧边栏
-                        if (window.innerWidth <= 768) {
-                            sidebar.classList.remove('active');
-                        }
-                    });
-                    
-                    historyList.appendChild(historyItem);
+            --bg-darker: #202123;
+            --bg-light: #444654;
+            --text-light: #ececf1;
+            --text-lighter: #d9d9e3;
+            --border-radius: 8px;
                 });
             }
             
-            function saveCurrentChat() {
-                const currentChatId = localStorage.getItem('currentChatId');
-                const history = getChatHistory();
-                const currentChat = history.find(chat => chat.id == currentChatId);
+            
+            padding: 0;
+            box-sizing: border-box;
+                constcurrentChat = history.find(chat => chat.id == currentChatId);
                 
                 if (currentChat) {
                     // 获取当前聊天内容
-                    const messages = [];
-                    chatContainer.querySelectorAll('.message').forEach(message => {
-                        const sender = message.classList.contains('user-message') ? 'user' : 'ai';
-                        const text = message.querySelector('.message-text').textContent;
+            background-color: var(--bg-darker);
+            color: var(--text-light);
+                        constsender = message.classList.contains('user-message') ? 'user' : 'ai';
+            overflow: hidden;
                         messages.push({ sender, text });
                     });
                     
-                    // 更新对话消息
+            display: flex;
                     currentChat.messages = messages;
                     
                     // 更新对话标题（如果有消息）
                     if (messages.length > 0) {
                         const firstMessage = messages[0].text;
-                        currentChat.title = firstMessage.substring(0, 30) + (firstMessage.length > 30 ? '...' : '');
+                        currentChat.title = firstMessage.substring(0, 30) + (firstMessage.length > 30 ? '...': '');
                     }
                     
                     localStorage.setItem('chatHistory', JSON.stringify(history));
                 }
             }
         });
-    </script>
+ </script>
 </body>
-</html>
+     </html>
