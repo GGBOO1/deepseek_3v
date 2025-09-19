@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI聊天助手 - 增强版</title>
+    <title>AI聊天助手 - DeepSeek V3</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -56,7 +56,7 @@
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 10px 极速30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 极速0.2);
         }
 
         .disclaimer-content h2 {
@@ -73,10 +73,10 @@
 
         .disclaimer-content ul {
             margin-left: 20px;
-            margin-bottom: 16极速px;
+            margin-bottom: 16px;
         }
 
-        .disclaimer-content li {
+        .极速disclaimer-content li {
             margin-bottom: 8px;
             font-size: 14px;
         }
@@ -91,7 +91,7 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10极速px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
@@ -105,7 +105,7 @@
         /* 移动端侧边栏隐藏 */
         .sidebar {
             width: 260px;
-            background-color: var(--sidebar极速-bg);
+            background-color: var(--sidebar-bg);
             color: white;
             padding: 16px;
             display: flex;
@@ -160,8 +160,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font极速-size: 14px;
-            color: rgba极速(255, 255, 255, 0.8);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
             transition: background-color 0.2s;
             display: flex;
             justify-content: space-between;
@@ -169,10 +169,10 @@
         }
 
         .history-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.极速1);
         }
 
-        .delete-chat {
+        .delete-ch极速at {
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.5);
@@ -231,7 +231,7 @@
             background-color: white;
             font-size: 14px;
             cursor: pointer;
-            min-width: 140px;
+            min-width: 160px;
         }
 
         .language-selector {
@@ -316,7 +316,7 @@
             flex-shrink: 0;
         }
 
-极速        .avatar-user {
+        .avatar-user {
             background-color: #ab68ff;
         }
 
@@ -336,21 +336,21 @@
 
         .message-content code {
             background-color: rgba(0, 0, 0, 0.05);
-            padding: 2极速px 6px;
+            padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
         }
 
         .message-content table {
             border-collapse: collapse;
-            width: 100%;
+            width: 极速100%;
             margin: 12px 0;
         }
 
         .message-content th, .message-content td {
             border: 1px solid #ddd;
             padding: 8px;
-        }
+极速        }
 
         .message-content th {
             background-color: rgba(0, 0, 0, 0.05);
@@ -395,7 +395,7 @@
             color: var(--primary-color);
             cursor: pointer;
             padding: 4px;
-            border-radius: 4px;
+            border-radius: 4极速px;
         }
 
         .send-btn:hover {
@@ -453,7 +453,7 @@
                 top: 0;
                 left: 0;
                 right: 0;
-                bottom: 极速0;
+                bottom: 0;
                 background-color: rgba(0, 0, 0, 0.5);
                 z-index: 999;
             }
@@ -481,7 +481,7 @@
             <ul>
                 <li id="disclaimerItem1">本AI助手生成的内容可能包含不准确或错误的信息，请谨慎参考</li>
                 <li id="disclaimerItem2">AI生成的内容不代表开发者的观点或立场</li>
-                <li id="disclaimerItem3">请勿输入个人敏感信息，对话内容可能会被用于模型训练</li>
+                <极速li id="disclaimerItem3">请勿输入个人敏感信息，对话内容可能会被用于模型训练</li>
                 <li id="disclaimerItem4">对于用户基于AI生成内容做出的任何决策，开发者不承担任何责任</li>
                 <li id="disclaimerItem5">开发者保留随时修改或终止服务的权利</li>
             </ul>
@@ -497,7 +497,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="logo">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M极速20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 极速22 18V6C22 4.89543 21.1046 4 20 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20极速H20C21.104极速6 20 22 19.1046 22 18V6C22 4.89543 21.1046 4 20 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M22 7L13.03 12.7C12.7213 12.8934 12.3643 12.9978 12 12.9978C11.6357 12.9978 11.2787 12.8934 10.97 12.7L2 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <span id="appName">AI聊天助手</span>
@@ -514,15 +514,15 @@
     </aside>
     
     <main class="main">
-        <header class="chat-header">
+        <header class极速="chat-header">
             <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="header-controls">
                 <select class="model-selector" id="modelSelector">
-                    <option value="gpt-3.5">GPT-3.5 Turbo</option>
-                    <option value="gpt-4">GPT-4</option>
-                    <option value="claude">Claude 2</option>
+                    <option value="deepseek-v3">DeepSeek V3</option>
+                    <option value="deepseek-coder">DeepSeek Coder</option>
+                    <option value="deepseek-chat">DeepSeek Chat</option>
                 </select>
                 <select class="language-selector" id="languageSelector">
                     <option value="zh-CN">中文 (简体)</option>
@@ -538,13 +538,13 @@
             <div class="message message-ai">
                 <div class="avatar">AI</div>
                 <div class="message-content" id="welcomeMessage">
-                    您好！我是AI助手，有什么我可以帮助您的吗？
+                    您好！我是DeepSeek V3 AI助手，有什么我可以帮助您的吗？
                 </div>
             </div>
         </div>
         
         <div class="input-area">
-            <极速div class="input-container">
+            <div class="input-container">
                 <textarea class="input-field" id="inputField" placeholder="输入您的问题..." rows="1"></textarea>
                 <button class="send-btn" id="sendBtn" disabled>
                     <i class="fas fa-paper-plane"></i>
@@ -578,23 +578,23 @@
                 'zh-CN': {
                     appName: 'AI聊天助手',
                     newChat: '新建聊天',
-                    welcome: '您好！我是AI助手，有什么我可以帮助您的吗？',
+                    welcome: '您好！我是DeepSeek V3 AI助手，有什么我可以帮助您的吗？',
                     inputPlaceholder: '输入您的问题...',
                     disclaimerTitle: '免责声明',
                     disclaimerText1: '在使用本AI聊天助手前，请仔细阅读以下免责声明：',
                     disclaimerItem1: '本AI助手生成的内容可能包含不准确或错误的信息，请谨慎参考',
                     disclaimerItem2: 'AI生成的内容不代表开发者的观点或立场',
-                    disclaimerItem3: '请勿输入个人敏感信息，对话内容可能会被用于模型训练',
+                    disclaimerItem3: '请极速勿输入个人敏感信息，对话内容可能会被用于模型训练',
                     disclaimerItem4: '对于用户基于AI生成内容做出的任何决策，开发者不承担任何责任',
                     disclaimerItem5: '开发者保留随时修改或终止服务的权利',
-                    disclaimerText2: '继续使用本服务表示您已阅读、理解并同意以上免责声明。',
+                    disclaimerText2: '继续使用本服务表示您极速已阅读、理解并同意以上免责声明。',
                     agree: '同意并继续',
                     footer: 'AI可能会生成不准确或错误的信息，请谨慎参考'
                 },
                 'zh-TW': {
                     appName: 'AI聊天助手',
                     newChat: '新建聊天',
-                    welcome: '您好！我是AI助手，有什麼我可以幫助您的嗎？',
+                    welcome: '您好！我是DeepSeek V3 AI助手，有什麼我可以幫助您的嗎？',
                     inputPlaceholder: '輸入您的問題...',
                     disclaimerTitle: '免責聲明',
                     disclaimerText1: '在使用本AI聊天助手前，請仔細閱讀以下免責聲明：',
@@ -610,7 +610,7 @@
                 'en': {
                     appName: 'AI Chat Assistant',
                     newChat: 'New Chat',
-                    welcome: 'Hello! I am an AI assistant, how can I help you today?',
+                    welcome: 'Hello! I am DeepSeek V3 AI assistant, how can I help you today?',
                     inputPlaceholder: 'Type your question...',
                     disclaimerTitle: 'Disclaimer',
                     disclaimerText1: 'Before using this AI chat assistant, please read the following disclaimer carefully:',
@@ -626,7 +626,7 @@
                 'ja': {
                     appName: 'AIチャットアシスタント',
                     newChat: '新しいチャット',
-                    welcome: 'こんにちは！AIアシスタントです。何かお手伝いできることはありますか？',
+                    welcome: 'こんにちは！DeepSeek V3 AIアシスタントです。何かお手伝いできることはありますか？',
                     inputPlaceholder: '質問を入力してください...',
                     disclaimerTitle: '免責事項',
                     disclaimerText1: 'このAIチャットアシスタントを使用する前に、以下の免責事項をよくお読みください：',
@@ -634,7 +634,7 @@
                     disclaimerItem2: 'AIが生成するコンテンツは開発者の見解または立場を代表するものではありません',
                     disclaimerItem3: '個人の機密情報を入力しないでください。会話内容はモデルトレーニングに使用される場合があります',
                     disclaimerItem4: 'AI生成コンテンツに基づくユーザーのいかなる決定についても、開発者は一切の責任を負いません',
-                    disclaimerItem5: '開発者はいつでもサービスを変更または終了する権利を留保します',
+                    disclaimerItem5极速: '開発者はいつでもサービスを変更または終了する権利を留保します',
                     disclaimerText2: '本サービスを継続して使用することにより、上記の免責事項を読み、理解し、同意したものとみなされます。',
                     agree: '同意して続行',
                     footer: 'AIは不正確または誤った情報を生成する可能性がありますので、注意してご利用ください'
@@ -642,7 +642,7 @@
                 'ru': {
                     appName: 'AI Чат-помощник',
                     newChat: 'Новый чат',
-                    welcome: 'Здравствуйте! Я AI-помощник, чем могу вам помочь?',
+                    welcome: 'Здравствуйте! Я DeepSeek V3 AI-помощник, чем могу вам помочь?',
                     inputPlaceholder: 'Введите ваш вопрос...',
                     disclaimerTitle: 'Отказ от ответственности',
                     disclaimerText1: 'Перед использованием этого AI чат-помощника, пожалуйста, внимательно прочтите следующее:',
@@ -709,7 +709,7 @@
                 document.getElementById('disclaimerItem1').textContent = langData.disclaimerItem1;
                 document.getElementById('disclaimerItem2').textContent = langData.disclaimerItem2;
                 document.getElementById('disclaimerItem3').textContent = langData.disclaimerItem3;
-                document.getElementById('disclaimerItem4').textContent = langData.disclaimerItem4;
+                document.getElementById('disclaimerItem4').textContent = lang极速Data.disclaimerItem4;
                 document.getElementById('disclaimerItem5').textContent = langData.disclaimerItem5;
                 document.getElementById('disclaimerText2').textContent = langData.disclaimerText2;
                 document.getElementById('agreeBtn').textContent = langData.agree;
@@ -735,7 +735,7 @@
             // 创建新聊天
             function createNewChat() {
                 const chatId = 'chat_' + Date.now();
-                currentChatId = chatId;
+                currentChat极速Id = chatId;
                 
                 chats[chatId] = {
                     id: chatId,
@@ -787,7 +787,7 @@
                         if (remainingChatIds.length > 0) {
                             loadChat(remainingChatIds[0]);
                         } else {
-                            create极速NewChat();
+                            createNewChat();
                         }
                     }
                     
@@ -876,7 +876,7 @@
                     chats[currentChatId].title = message.length > 20 ? message.substring(0, 20) + '...' : message;
                 }
                 
-                // 清空输入框
+               极速 // 清空输入框
                 inputField.value = '';
                 adjustTextareaHeight();
                 
@@ -899,7 +899,7 @@
                     let response = translations[userLanguage].welcome;
                     
                     // 添加AI消息
-                    chats[currentChat极速Id].messages.push({
+                    chats[currentChatId].messages.push({
                         role: 'ai',
                         content: response
                     });
